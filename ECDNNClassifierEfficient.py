@@ -4,7 +4,7 @@ import scipy
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.neighbors import KDTree
 
-class ECDNNClassifier(BaseEstimator, ClassifierMixin):
+class ECDNNClassifierEfficient(BaseEstimator, ClassifierMixin):
 
   def __init__(self,n_neighbors=20,distance_metric='euclidean',n_vote=2):
       self.n_neighbors = n_neighbors
