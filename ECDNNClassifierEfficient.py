@@ -27,7 +27,6 @@ class ECDNNClassifierEfficient(BaseEstimator, ClassifierMixin):
       self.X_ = X
       self.y_ = y
       self.tree_ = KDTree(X, metric=self.distance_metric)
-
       self.fitted_ = True
       # Return the classifier
       return self
@@ -36,7 +35,6 @@ class ECDNNClassifierEfficient(BaseEstimator, ClassifierMixin):
 
     if self.fitted_ == None:
 		    raise Exception('predict() called before fit()')
-   
     else:
         input_dim=X.shape[1]
         #calculate distance
