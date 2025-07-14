@@ -2,6 +2,7 @@ import numpy as np
 import scipy
 
 from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.neighbors import KDTree
 
 class ECDNNClassifier(BaseEstimator, ClassifierMixin):
 
@@ -25,6 +26,7 @@ class ECDNNClassifier(BaseEstimator, ClassifierMixin):
       """
       self.X_ = X
       self.y_ = y
+      self.tree_ = KDTree(X, metric=self.distance_metric)
 
       self.fitted_ = True
       # Return the classifier
@@ -38,9 +40,10 @@ class ECDNNClassifier(BaseEstimator, ClassifierMixin):
     else:
         input_dim=X.shape[1]
         #calculate distance
-        d=scipy.spatial.distance.cdist(X,self.X_,self.distance_metric)
+        #d=scipy.spatial.distance.cdist(X,self.X_,self.distance_metric)
         #get k lowest distance and save to Sx
-        indexes=np.argsort(d)[:,:self.n_neighbors] # return k indexes of lowest value in d
+        #indexes=np.argsort(d)[:,:self.n_neighbors] # return k indexes of lowest value in d
+        d, indexes = self.tree_.query(X, k=self.n_neighbors)  # Fast nearest neighbor search
 
         y_pred_default=self.y_[indexes[:,0]] ##set y_predict list default to the first neighbor
 
