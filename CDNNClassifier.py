@@ -1,7 +1,17 @@
+
+    def predict(self, X):
+        if not self.fitted_:
+            raise Exception('predict() called before fit()')
+
+        d, indexes = self.tree_.query(X, k=self.n_neighbors)  # Fast nearest neighbor search
+        return self._assign_labels(X, indexes)
+
+
 import numpy as np
 import scipy
 
 from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.neighbors import KDTree
 
 class CDNNClassifier(BaseEstimator, ClassifierMixin):
 
@@ -24,7 +34,7 @@ class CDNNClassifier(BaseEstimator, ClassifierMixin):
       """
       self.X_ = X
       self.y_ = y
-
+      self.tree_ = KDTree(X, metric=self.distance_metric)
       self.fitted_ = True
       # Return the classifier
       return self
@@ -37,10 +47,11 @@ class CDNNClassifier(BaseEstimator, ClassifierMixin):
     else:
       input_dim=X.shape[1]
       #calculate distance
-      d=scipy.spatial.distance.cdist(X,self.X_,self.distance_metric)
+      #d=scipy.spatial.distance.cdist(X,self.X_,self.distance_metric)
       #get k lowest distance and save to Sx
-      indexes=np.argsort(d)[:,:self.n_neighbors] # return k indexes of lowest value in d
-
+      #indexes=np.argsort(d)[:,:self.n_neighbors] # return k indexes of lowest value in d
+      d, indexes = self.tree_.query(X, k=self.n_neighbors)  # Fast nearest neighbor search
+	    
       y_pred=[] ##set y_predict list
       for n,index in enumerate(indexes): ##looping through k indexes over the whole test dataset
         Sx = dict()
