@@ -13,7 +13,7 @@ import scipy
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.neighbors import KDTree
 
-class CDNNClassifier(BaseEstimator, ClassifierMixin):
+class CDNNClassifierEfficient(BaseEstimator, ClassifierMixin):
 
   def __init__(self,n_neighbors=20,distance_metric='euclidean'):
       self.n_neighbors = n_neighbors
